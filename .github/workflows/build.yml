@@ -10,9 +10,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run a one-line script
-        run: echo Hello, world!
-      
+      - name: Simluate a Build
+        run: touch output.txt
+        
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:          
+          name: 'your-artifact-name'
+          path: 'output.txt'
+          
       - uses: JasonEtco/create-an-issue@v2
         name: Create approval Issue
         env:
