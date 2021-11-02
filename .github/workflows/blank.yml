@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run a one-line script
+        run: echo Hello, world!
+      
+      - uses: JasonEtco/create-an-issue@v2
+        name: Create approval Issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENVIRONMENT: Dev
+          RUNID: ${{ github.run_id  }}
+        with:
+          filename: .github/deployment-approval.md
