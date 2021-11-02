@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Simluate a Build
+      - name: Simulate a Build
         run: touch output.txt
         
       - name: Upload a Build Artifact
