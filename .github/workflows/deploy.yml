@@ -16,7 +16,7 @@ jobs:
       - name: Comment on Issue      
         uses: peter-evans/create-or-update-comment@v1
         with:
-          issue-number: 1
+          issue-number: ${{ github.event.issue.number }}
           body: 'Deloyment Initiated 🚀'
           
       - name: Get Issue data
