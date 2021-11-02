@@ -5,8 +5,9 @@ on:
   issue_comment:
     types: [created]
 
-jobs:
+jobs:  
   parse:
+    if: ${{ !github.event.issue.pull_request && github.event.comment.body == 'Approved' }}
     runs-on: ubuntu-latest
     outputs:
       deploy-environment: ${{ steps.issue_body_parser.outputs.environment }}
