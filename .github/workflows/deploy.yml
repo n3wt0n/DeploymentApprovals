@@ -37,7 +37,7 @@ jobs:
       - name: download workflow artifact
         uses: benday-inc/download-artifact@main
         with:
-           token: ${{ secrets.GITHUB_TOKEN }}'
+           token: ${{ secrets.GITHUB_TOKEN }}
            repository_owner: 'n3wt0n'
            repository_name: 'DeploymentApprovals'
            workflow_name: 'CI'
@@ -87,10 +87,10 @@ jobs:
     
     steps:
       - name: Close Issue
-        if: ${{ success() }}
+        if: ${{ needs.*.status == 'success' }}
         uses: peter-evans/close-issue@v1.0.3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}'
+          token: ${{ secrets.GITHUB_TOKEN }}
           # repository: # optional, default is ${{ github.repository }}
           # issue-number: # optional, default is ${{ github.event.issue.number }}          
           comment: 'Deployment Completed 🌟'
