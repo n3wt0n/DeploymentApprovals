@@ -69,7 +69,7 @@ jobs:
       - name: Download workflow artifact
         uses: benday-inc/download-artifact@main
         with:
-           token: ${{ secrets.GITHUB_TOKEN }}'
+           token: ${{ secrets.GITHUB_TOKEN }}
            repository_owner: 'n3wt0n'
            repository_name: 'DeploymentApprovals'
            workflow_name: 'CI'
