@@ -46,7 +46,17 @@ jobs:
            download_filename: 'your-artifact-name.zip'
      
       - name: Deploy to DEV
-        run: echo Simulating Deployment
+        run: echo Simulating Deployment     
+      
+          
+      - uses: JasonEtco/create-an-issue@v2
+        name: Create approval Issue for Prod
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENVIRONMENT: Prod
+          RUNID: ${{ github.run_id  }}
+        with:
+          filename: .github/deployment-approval.md
   
   deploy-prod:
     needs: [parse]
@@ -69,4 +79,17 @@ jobs:
 
       - name: Deploy to PROD
         run: echo Simluationg Deployment
-
+        
+  close-issue:
+    if: ${{ always() }}
+    needs: [deploy-dev, deploy-prod]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Close Issue
+        uses: peter-evans/close-issue@v1.0.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}'
+          # repository: # optional, default is ${{ github.repository }}
+          # issue-number: # optional, default is ${{ github.event.issue.number }}          
+          comment: 'Deployment Completed 🌟'
