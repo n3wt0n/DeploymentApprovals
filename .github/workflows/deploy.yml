@@ -87,7 +87,7 @@ jobs:
     
     steps:
       - name: Close Issue
-        if: ${{ needs.deploy-dev.status == 'success' || needs.deploy-prod.status == 'success' }}
+        if: ${{ needs.deploy-dev.result == 'success' || needs.deploy-prod.result == 'success' }}
         uses: peter-evans/close-issue@v1.0.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
