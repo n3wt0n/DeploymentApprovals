@@ -19,6 +19,12 @@ jobs:
             github_token: ${{ secrets.GITHUB_TOKEN }}
             issue_id: ${{ github.event.issue.number }}
             payload_marker: target_payload
+
+      - name: Print Values
+        run: |
+          echo "RunID: ${{ steps.issue_body_parser.outputs.runId }}
+          echo "Environment: ${{ steps.issue_body_parser.outputs.environment }}
+      
         
   deploy-dev:
     needs: [parse]
