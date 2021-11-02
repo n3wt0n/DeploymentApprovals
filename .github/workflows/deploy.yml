@@ -10,7 +10,7 @@ jobs:
     if: ${{ !github.event.issue.pull_request && github.event.comment.body == 'Approved' }}
     runs-on: ubuntu-latest
     outputs:
-      deploy-environment: ${{ steps.issue_body_parser.outputs.environment }}
+      deploy-environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
     steps:
       - name: Get Issue data
         uses: peter-murray/issue-body-parser-action@v1
@@ -22,8 +22,8 @@ jobs:
 
       - name: Print Values
         run: |
-          echo "RunID: ${{ steps.issue_body_parser.outputs.runId }}
-          echo "Environment: ${{ steps.issue_body_parser.outputs.environment }}
+          echo "RunID: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runId }}
+          echo "Environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
       
         
   deploy-dev:
