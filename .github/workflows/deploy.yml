@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       deploy-environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
+      ci_run_id: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runId }}
     steps:
       - name: Get Issue data
         uses: peter-murray/issue-body-parser-action@v1
@@ -23,8 +24,7 @@ jobs:
       - name: Print Values
         run: |
           echo "RunID: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runId }}
-          echo "Environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
-      
+          echo "Environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}      
         
   deploy-dev:
     needs: [parse]
@@ -33,11 +33,40 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
+      - name: download workflow artifact
+        uses: benday-inc/download-artifact@main
+        with:
+           token: ${{ secrets.GITHUB_TOKEN }}'
+           repository_owner: 'n3wt0n'
+           repository_name: 'DeploymentApprovals'
+           workflow_name: 'CI'
+           run_id: ${{ needs.parse.outputs.ci-run-id }}
+           download_path: '${{ github.workspace }}'
+           download_filename: 'your-artifact-name.zip'
+     
+      - name: Deploy to DEV
+        run: echo Simulating Deployment
+  
+  deploy-prod:
+    needs: [parse]
+    if: ${{ needs.parse.outputs.deploy-environment == 'Prod' }}
+    runs-on: ubuntu-latest
 
-      - name: Run a one-line script
-        run: echo Hello, world!
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: download workflow artifact
+        uses: benday-inc/download-artifact@main
+        with:
+           token: ${{ secrets.GITHUB_TOKEN }}'
+           repository_owner: 'n3wt0n'
+           repository_name: 'DeploymentApprovals'
+           workflow_name: 'CI'
+           run_id: ${{ needs.parse.outputs.ci-run-id }}
+           download_path: '${{ github.workspace }}'
+           download_filename: 'your-artifact-name.zip'
 
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Deploy to PROD
+        run: echo Simluationg Deployment
+
