@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       deploy-environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
-      ci_run_id: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runId }}
+      ci-run-id: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runId }}
     steps:
       - name: Get Issue data
         uses: peter-murray/issue-body-parser-action@v1
@@ -54,7 +54,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENVIRONMENT: Prod
-          RUNID: ${{ github.run_id  }}
+          RUNID: ${{ needs.parse.outputs.ci-run-id }}
         with:
           filename: .github/deployment-approval.md
   
