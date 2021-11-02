@@ -87,6 +87,7 @@ jobs:
     
     steps:
       - name: Close Issue
+        if: ${{ success() }}
         uses: peter-evans/close-issue@v1.0.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}'
