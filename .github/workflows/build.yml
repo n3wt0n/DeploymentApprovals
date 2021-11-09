@@ -18,12 +18,3 @@ jobs:
         with:          
           name: 'your-artifact-name'
           path: 'output.txt'
-          
-      - uses: JasonEtco/create-an-issue@v2
-        name: Create approval Issue
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ENVIRONMENT: Dev
-          RUNNUMBER: ${{ github.run_number  }}
-        with:
-          filename: .github/deployment-approval.md
