@@ -24,7 +24,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENVIRONMENT: Dev
-          RUNID: ${{ github.run_id  }}
           RUNNUMBER: ${{ github.run_number  }}
         with:
           filename: .github/deployment-approval.md
