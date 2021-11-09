@@ -35,17 +35,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+     # - name: Download workflow artifact
+     #   uses: benday-inc/download-artifact@main
+     #   with:
+     #      token: ${{ secrets.GITHUB_TOKEN }}
+     #      repository_owner: 'n3wt0n'
+     #      repository_name: 'DeploymentApprovals'
+     #      workflow_name: 'CI'
+     #      run_id: ${{ needs.parse.outputs.ci-run-id }}
+     #      download_path: '${{ github.workspace }}'
+     #      download_filename: 'your-artifact-name.zip'
+           
       - name: Download workflow artifact
-        uses: benday-inc/download-artifact@main
+        uses: dawidd6/action-download-artifact@v2.15.0
         with:
-           token: ${{ secrets.GITHUB_TOKEN }}
-           repository_owner: 'n3wt0n'
-           repository_name: 'DeploymentApprovals'
-           workflow_name: 'CI'
-           run_id: ${{ needs.parse.outputs.ci-run-id }}
-           download_path: '${{ github.workspace }}'
-           download_filename: 'your-artifact-name.zip'
-     
+          workflow: 'CI'
+          repo: 'DeploymentApprovals'
+          run_id: ${{ needs.parse.outputs.ci-run-id }}
+          name: 'your-artifact-name'
+          path: '${{ github.workspace }}'
+          
       - name: Deploy to DEV
         run: echo Simulating Deployment     
           
