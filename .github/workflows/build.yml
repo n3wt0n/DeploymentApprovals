@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Simulate a Build
-        run: cat 'hello youtube' > output.txt
+        run: echo 'hello youtube' > output.txt
         
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.4
