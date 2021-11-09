@@ -38,7 +38,7 @@ jobs:
       - name: Download workflow artifact
         uses: dawidd6/action-download-artifact@v2.15.0
         with:
-          workflow: CI
+          workflow: build.yml
           repo: n3wt0n/DeploymentApprovals
           run_number: ${{ needs.parse.outputs.ci-run-number }}
           name: your-artifact-name
