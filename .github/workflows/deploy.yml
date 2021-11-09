@@ -52,7 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENVIRONMENT: Prod
-          RUNID: ${{ needs.parse.outputs.ci-run-id }}
+          RUNNUMBER: ${{ needs.parse.outputs.ci-run-number }}
         with:
           filename: .github/deployment-approval.md
   
@@ -63,12 +63,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      
+           
       - name: Download workflow artifact
         uses: dawidd6/action-download-artifact@v2.15.0
         with:
           workflow: build.yml
-          repo: DeploymentApprovals
+          repo: n3wt0n/DeploymentApprovals
           run_number: ${{ needs.parse.outputs.ci-run-number }}
           name: your-artifact-name
           path: ${{ github.workspace }}
