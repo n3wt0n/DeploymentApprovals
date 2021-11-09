@@ -2,7 +2,56 @@
 name: Deploy
 
 on:
-
+  issue_comment:
+    types: [created]
 
 jobs:  
+  parse:
+    if: ${{ !github.event.issue.pull_request && github.event.comment.body == 'Approved' }}
+    runs-on: ubuntu-latest
+    outputs:
+      deploy-environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
+      ci-run-number: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runNumber }}
+    steps:
+      - name: Comment on Issue      
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: 'Deployment Initiated 🚀'
+          
+      - name: Get Issue Data
+        uses: peter-murray/issue-body-parser-action@v1
+        id: issue_body_parser
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_id: ${{ github.event.issue.number }}         
+          payload_marker: target_payload 
   
+  deploy-dev:
+    needs: [parse]
+    if: ${{ needs.parse.outputs.deploy-environment == 'Dev' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+               
+      - name: Download workflow artifact
+        uses: dawidd6/action-download-artifact@v2.15.0
+        with:
+          workflow: build.yml
+          repo: n3wt0n/DeploymentApprovals
+          run_number: ${{ needs.parse.outputs.ci-run-number }}
+          name: your-artifact-name
+          path: ${{ github.workspace }}
+          
+      - name: Deploy to DEV
+        run: echo Simulating Deployment  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
