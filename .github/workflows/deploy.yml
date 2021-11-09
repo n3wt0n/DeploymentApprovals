@@ -44,11 +44,48 @@ jobs:
           path: ${{ github.workspace }}
           
       - name: Deploy to DEV
-        run: echo Simulating Deployment  
+        run: echo Simulating Deployment    
+          
+      - uses: JasonEtco/create-an-issue@v2
+        name: Create approval Issue for Prod
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENVIRONMENT: Prod
+          RUNNUMBER: ${{ needs.parse.outputs.ci-run-number }}
+        with:
+          filename: .github/deployment-approval.md
     
+  deploy-prod:
+    needs: [parse]
+    if: ${{ needs.parse.outputs.deploy-environment == 'Prod' }}
+    runs-on: ubuntu-latest    
+
+    steps:
+               
+      - name: Download workflow artifact
+        uses: dawidd6/action-download-artifact@v2.15.0
+        with:
+          workflow: build.yml
+          repo: n3wt0n/DeploymentApprovals
+          run_number: ${{ needs.parse.outputs.ci-run-number }}
+          name: your-artifact-name
+          path: ${{ github.workspace }}
+          
+      - name: Deploy to PROD
+        run: echo Simulating Deployment 
+
+  close-issue:
+    needs: [deploy-dev, deploy-prod]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest  
     
-    
-    
+    steps:
+      - name: Close Issue
+        if: ${{ needs.deploy-dev.result == 'success' || needs.deploy-prod.result == 'success' }}
+        uses: peter-evans/close-issue@v1.0.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment: 'Deployment Completed 🌟'
     
     
     
