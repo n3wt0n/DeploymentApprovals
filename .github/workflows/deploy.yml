@@ -81,7 +81,7 @@ jobs:
            token: ${{ secrets.GITHUB_TOKEN }}
            repository_owner: 'n3wt0n'
            repository_name: 'DeploymentApprovals'
-           workflow_name: 'CI'
+           workflow_name: 'build.yml'
            run_id: ${{ needs.parse.outputs.ci-run-id }}
            download_path: '${{ github.workspace }}'
            download_filename: 'your-artifact-name.zip'
