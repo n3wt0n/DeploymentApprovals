@@ -11,7 +11,6 @@ Comment "Approved" to kick the deployment off.
 === DON'T CHANGE BELOW THIS LINE
 ```json target_payload
 {
-    "runId": {{ env.RUNID }},
     "runNumber":  {{ env.RUNNUMBER }},
     "environment": "{{ env.ENVIRONMENT }}"
 }
