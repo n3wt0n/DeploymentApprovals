@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       deploy-environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
-      ci-run-id: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runId }}
+      ci-run-number: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runNumber }}
     steps:
       - name: Comment on Issue      
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: 'Deloyment Initiated 🚀'
+          body: 'Deployment Initiated 🚀'
           
       - name: Get Issue data
         uses: peter-murray/issue-body-parser-action@v1
@@ -51,7 +51,7 @@ jobs:
         with:
           workflow: 'CI'
           repo: 'DeploymentApprovals'
-          run_id: ${{ needs.parse.outputs.ci-run-id }}
+          run_number: ${{ needs.parse.outputs.ci-run-number }}
           name: 'your-artifact-name'
           path: '${{ github.workspace }}'
           
@@ -87,7 +87,7 @@ jobs:
            download_filename: 'your-artifact-name.zip'
 
       - name: Deploy to PROD
-        run: echo Simluationg Deployment
+        run: echo Simulating Deployment
         
   close-issue:
     if: ${{ always() }}
