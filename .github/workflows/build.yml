@@ -19,11 +19,26 @@ jobs:
           name: 'your-artifact-name'
           path: 'output.txt'
           
-      - name: Create an issue
+  create-issues:
+    needs: [build]
+    name: Create Deployment Issues
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Create PROD Issue
         uses: JasonEtco/create-an-issue@v2.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ENVIRONMENT: Dev
+          ENVIRONMENT: Prod
+          RUNNUMBER: ${{ github.run_number  }}
+        with:         
+          filename: .github/deployment-approval.md
+          
+      - name: Create ALT-PROD Issue
+        uses: JasonEtco/create-an-issue@v2.6.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENVIRONMENT: alt-prod
           RUNNUMBER: ${{ github.run_number  }}
         with:         
           filename: .github/deployment-approval.md
